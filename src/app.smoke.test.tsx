@@ -140,6 +140,39 @@ describe('浏览器全流程冒烟（jsdom + IndexedDB）', () => {
     fireEvent.click(screen.getByRole('button', { name: /契约与授权/ }));
     await bodyMatches(/字段契约注册表/);
     expect(document.body.textContent).toMatch(/授权六维交集模拟器/);
+
+    // 17) 区间删失风险估计：硬边界 + 拟合落界 + 两种“只发布边界”闸门
+    fireEvent.click(screen.getByRole('button', { name: /区间风险/ }));
+    await screen.findByText(/区间删失测量 · 风险阈值影响估计/);
+    await bodyMatches(/无分布硬边界/);
+    // 主样例 20 点测 + 4 个 <2 + 3 个 [8,12] 舍入：6/27–9/27 = 22.2%–33.3%，拟合 ~26.1% 落界
+    expect(document.body.textContent).toMatch(/22\.2%/);
+    expect(document.body.textContent).toMatch(/33\.3%/);
+    expect(document.body.textContent).toMatch(/拟合 26\.1%/);
+    expect(document.body.textContent).toMatch(/落在硬边界/);
+    // 结果版本播种：主批次存在“边界 + 拟合”版本（需等待 IDB 异步装载）
+    await bodyMatches(/BG-20261125-A · v1/);
+
+    // 小样本批次：只发布边界，不给出拟合点
+    fireEvent.click(screen.getByRole('button', { name: /小批量试检/ }));
+    await bodyMatches(/本批次不发布分布拟合点估计/);
+    expect(document.body.textContent).toMatch(/样本太少|sample_too_small|小于最小可拟合样本/);
+
+    // 方法混批：方法不一致同样只发布边界
+    fireEvent.click(screen.getByRole('button', { name: /测宽仪与超声波混批/ }));
+    await bodyMatches(/混用了 2 种检测方法/);
+
+    // 回到主批次，改变发布方法 → 闸门提示方法不一致，发布“仅边界”版本 v2
+    fireEvent.click(screen.getByRole('button', { name: /主楼二层梁板/ }));
+    const methodSelect = document.querySelector('select.select') as HTMLSelectElement;
+    // 页面上有多个 select；定位“本版本采用的检测方法”所在卡片中的 select
+    const publishSelect = Array.from(document.querySelectorAll('select')).find((el) =>
+      el.closest('.card')?.textContent?.includes('本版本采用的检测方法'),
+    ) as HTMLSelectElement;
+    fireEvent.change(publishSelect ?? methodSelect, { target: { value: 'ultrasonic' } });
+    await bodyMatches(/发布署名方法|与批次实测方法/);
+    await clickButton(/发布 v2：仅边界/);
+    await bodyMatches(/BG-20261125-A · v2/);
   }, 120000);
 
   it('刷新式重新挂载后 IndexedDB 数据仍在（持久化）', async () => {

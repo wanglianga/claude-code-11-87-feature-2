@@ -24,7 +24,7 @@ import { uid } from '../domain/hash';
 import { workerApi } from './workerClient';
 import { idbBulkPut, idbDelete, idbGetAll, idbPut, kvGet, kvSet, STORES, wipeAll } from '../db/idb';
 
-export type TabKey = 'scenario' | 'studio' | 'packages' | 'review' | 'receipts' | 'history' | 'contracts';
+export type TabKey = 'scenario' | 'studio' | 'packages' | 'review' | 'receipts' | 'history' | 'contracts' | 'risk';
 
 interface Notice {
   kind: 'ok' | 'err' | 'info';

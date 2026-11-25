@@ -442,3 +442,71 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .content { padding: 16px 14px 50px; }
   .topbar { padding: 0 14px; }
 }
+
+/* ============================================================
+   区间删失风险估计（Interval-censored risk）
+   ============================================================ */
+.risk-batch-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.risk-batch-tab {
+  text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 10px;
+  padding: 10px 14px; cursor: pointer; min-width: 220px; transition: all .15s;
+}
+.risk-batch-tab:hover { border-color: var(--brand); }
+.risk-batch-tab.active { border-color: var(--brand); background: var(--brand-soft); box-shadow: 0 0 0 2px rgba(27,95,208,.12); }
+.risk-batch-tab .bt-code { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.risk-batch-tab .bt-name { font-weight: 700; font-size: 13.5px; margin-top: 2px; }
+.risk-batch-tab .bt-meta { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
+
+.risk-axis { margin: 18px 6px 6px; }
+.risk-track { position: relative; height: 26px; border-radius: 7px; background: repeating-linear-gradient(45deg,#f1f4fa,#f1f4fa 6px,#e9eef8 6px,#e9eef8 12px); border: 1px solid var(--line); overflow: visible; }
+.risk-seg { position: absolute; top: 0; bottom: 0; }
+.risk-seg.must { left: 0; background: linear-gradient(90deg,#e06b6b,#c62f2f); border-radius: 6px 0 0 6px; }
+.risk-seg.ambig { background: repeating-linear-gradient(-45deg,#f3c98b,#f3c98b 7px,#e8a94e 7px,#e8a94e 14px); border-left: 1px dashed #b45309; border-right: 1px dashed #b45309; }
+.risk-marker { position: absolute; top: -7px; bottom: -7px; width: 0; border-left: 3px solid var(--brand-deep); z-index: 3; }
+.risk-marker .rm-tag { position: absolute; top: -19px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 11px; font-weight: 750; color: var(--brand-deep); background: #fff; border: 1px solid #cdddff; border-radius: 6px; padding: 0 6px; }
+.risk-marker.fit { border-left-color: var(--teal); }
+.risk-marker.fit .rm-tag { color: var(--teal); border-color: #bfe7e1; }
+.risk-marker.mid { border-left: 2px dotted var(--purple); }
+.risk-marker.mid .rm-tag { color: var(--purple); border-color: #ddd0fa; }
+.risk-ticks { position: relative; height: 18px; margin-top: 4px; font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); }
+.risk-ticks span { position: absolute; transform: translateX(-50%); }
+.risk-legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-top: 8px; }
+.risk-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+.risk-swatch { width: 14px; height: 11px; border-radius: 3px; display: inline-block; border: 1px solid rgba(0,0,0,.08); }
+
+.risk-stack { display: flex; height: 16px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); margin: 8px 0 6px; }
+.risk-stack div { height: 100%; }
+.rs-must { background: var(--danger); }
+.rs-ambig { background: #e8a94e; }
+.rs-cannot { background: #c6d0e0; }
+
+.iv-cell { min-width: 150px; }
+.iv-range { position: relative; height: 8px; border-radius: 999px; background: var(--bg-2); margin: 14px 4px 4px; }
+.iv-bar { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: #7c93b8; }
+.iv-bar.must_exceed { background: var(--danger); }
+.iv-bar.cannot_exceed { background: #9fb0c8; }
+.iv-bar.ambiguous { background: #e8a94e; }
+.iv-threshold { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 2px solid var(--ink); }
+.iv-threshold::after { content: '10'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 9.5px; color: var(--ink); font-family: var(--mono); }
+
+.risk-mini-row { display: grid; grid-template-columns: 46px 1fr 64px; gap: 8px; align-items: center; margin: 5px 0; font-size: 12px; }
+.risk-mini-track { height: 9px; border-radius: 999px; background: var(--bg-2); overflow: hidden; }
+.risk-mini-fill { height: 100%; border-radius: 999px; }
+
+.gate-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.gate-reason { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; border-radius: 9px; padding: 9px 12px; border: 1px solid; }
+.gate-reason.block { background: var(--warn-soft); border-color: #efd3a6; color: #83400a; }
+.gate-ok { background: var(--ok-soft); border-color: #bfe3cb; color: #11602f; border-radius: 9px; padding: 9px 12px; font-size: 12.5px; }
+
+.formula-box { font-family: var(--mono); font-size: 12px; background: #0f1b2d; color: #cfe0ff; border-radius: 9px; padding: 11px 13px; overflow-x: auto; line-height: 1.7; }
+.formula-box .hl { color: #7fe0d4; }
+
+.ver-card { border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; background: #fff; }
+.ver-card.bounds_only { border-left-color: var(--warn); }
+.ver-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ver-title { font-weight: 750; font-size: 13.5px; }
+.ver-meta { font-size: 11.5px; color: var(--ink-3); }
+.ver-headline { font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+
+.scroll-table { max-height: 520px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.scroll-table .data-table th { position: sticky; top: 0; background: #f4f7fc; z-index: 1; }

@@ -11,6 +11,7 @@ import Review from './components/Review';
 import Receipts from './components/Receipts';
 import History from './components/History';
 import Contracts from './components/Contracts';
+import IntervalRisk from './components/IntervalRisk';
 import { Toggle } from './components/ui';
 
 const TABS: { key: TabKey; label: string; ico: string; title: string; crumb: string }[] = [
@@ -21,6 +22,7 @@ const TABS: { key: TabKey; label: string; ico: string; title: string; crumb: str
   { key: 'receipts', label: '回执账', ico: '🧾', title: '交付回执账本', crumb: '传输 / 解析 / 语义确认 / 质疑 / 更正 · 冲突裁定' },
   { key: 'history', label: '版本与审计', ico: '🕓', title: '修订链 · 审阅历史 · 审计账本', crumb: '签名修订1保留 · 审计摘要不随授权撤销消失' },
   { key: 'contracts', label: '契约与授权', ico: '📐', title: '字段契约与授权交集', crumb: '类型 / 单位 / 精度 / 检出限 / 空值 / 枚举 / 来源 / 角色' },
+  { key: 'risk', label: '区间风险估计', ico: '📏', title: '区间删失测量 · 风险阈值影响估计', crumb: '检出限 / 定量限 / 舍入误差 / 检测方法 × 可行区间 × 10mm 越限比例上下界与拟合' },
 ];
 
 function Toast() {
@@ -144,6 +146,7 @@ export default function App() {
           {s.tab === 'receipts' && <Receipts />}
           {s.tab === 'history' && <History />}
           {s.tab === 'contracts' && <Contracts />}
+          {s.tab === 'risk' && <IntervalRisk />}
         </main>
       </div>
       <Toast />
