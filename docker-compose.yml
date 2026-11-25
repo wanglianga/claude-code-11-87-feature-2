@@ -1,0 +1,10 @@
+services:
+  delivery-contract-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: delivery-contract-platform:1.0.0
+    container_name: dcp-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
